@@ -1,0 +1,21 @@
+{
+    "main": {
+        "debug_mode": true,
+        "php_version": "PHP_7.x",
+        "base_path": "/",
+        "php_error": true,
+        "create_log": false,
+        "request": "form-data",
+        "response": "json"
+    },
+    "subproject": {
+        "auto_doc": {
+            "active": false,
+            "machine_learning_doc": false
+        },
+        "framework_doc": false,
+        "route_manager": false,
+        "rpc": false,
+        "cpp_build": false
+    }
+}
