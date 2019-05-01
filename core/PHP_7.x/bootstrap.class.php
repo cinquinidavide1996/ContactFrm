@@ -1,6 +1,6 @@
 <?php
 
-new class {
+class Bootstrap {
 
     private $RoutingCtrl;
     private $HttpCtrl;

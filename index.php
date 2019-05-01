@@ -2,8 +2,8 @@
 
 $php_version = 'PHP_7.x';
 
-require_once __DIR__ . "/core/$php_version/controller.class.php";
-require_once __DIR__ . "/core/$php_version/http.class.php";
-require_once __DIR__ . "/core/$php_version/routing.class.php";
-require_once __DIR__ . "/core/$php_version/superglobal.class.php";
-require_once __DIR__ . "/core/$php_version/bootstrap.class.php";
+require_once __DIR__ . "/core/$php_version/autoload.class.php";
+$loadCtrl = new AutoloadManager();
+$loadCtrl->load(__DIR__ . "/core/$php_version/");
+
+new Bootstrap();
