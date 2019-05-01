@@ -15,8 +15,8 @@ class User extends Controller {
 
     /**
      *
-     * @method      GET
-     * @uri_path    /user
+     * @method GET
+     * @uri_path /user
      */
     public function getList($textFilter) {
         $sql = 'SELECT ID, name, email FROM user WHERE TRUE';
@@ -37,8 +37,8 @@ class User extends Controller {
 
     /**
      *
-     * @method      GET
-     * @uri_path    /user/:UserID
+     * @method GET
+     * @uri_path /user/:UserID
      */
     public function detail() {
         $q = $this->utils['db']->prepare(''
@@ -64,8 +64,8 @@ class User extends Controller {
 
     /**
      *
-     * @method      POST
-     * @uri_path    /user
+     * @method POST
+     * @uri_path /user
      */
     public function create($username, $password, $name, $email) {
         $q = $this->utils['db']->prepare(""
@@ -99,8 +99,8 @@ class User extends Controller {
 
     /**
      *
-     * @method      DELETE
-     * @uri_path    /user/:UserID
+     * @method DELETE
+     * @uri_path /user/:UserID
      */
     public function delete() {
         $q = $this->utils['db']->prepare("DELETE FROM user WHERE ID = :UserID");
@@ -118,8 +118,8 @@ class User extends Controller {
 
     /**
      *
-     * @method      PUT
-     * @uri_path    /user/:UserID
+     * @method PUT
+     * @uri_path /user/:UserID
      */
     public function update($name, $password) {
         throw new Exception('', CODE::NOTIMPLEMENTED);
