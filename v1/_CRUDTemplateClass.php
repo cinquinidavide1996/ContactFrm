@@ -58,7 +58,7 @@ class _CRUDTemplateClass extends Controller {
 
         $sql = 'SELECT * FROM `crud_template` WHERE TRUE';
         $sql .= $filter1 !== '' ? ' AND (param1 LIKE :filter1)' : '';
-        $sql .= $filter2 !== '' ? ' AND (param1 LIKE :filter2)' : '';
+        $sql .= $filter2 !== '' ? ' AND (param2 LIKE :filter2)' : '';
 
         $q = $this->utils['db']->prepare($sql);
 
@@ -135,7 +135,7 @@ class _CRUDTemplateClass extends Controller {
         $this->http->code(CODE::NOCONTENT);
         return;
     }
-
+    
     /**
      * 
      * @method PATCH
