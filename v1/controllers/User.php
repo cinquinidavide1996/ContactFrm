@@ -14,7 +14,6 @@
 class User extends Controller {
 
     /**
-     *
      * @method GET
      * @uri_path /user
      */
@@ -36,7 +35,6 @@ class User extends Controller {
     }
 
     /**
-     *
      * @method GET
      * @uri_path /user/:UserID
      */
@@ -63,7 +61,6 @@ class User extends Controller {
     }
 
     /**
-     *
      * @method POST
      * @uri_path /user
      */
@@ -98,7 +95,6 @@ class User extends Controller {
     }
 
     /**
-     *
      * @method DELETE
      * @uri_path /user/:UserID
      */
@@ -117,7 +113,6 @@ class User extends Controller {
     }
 
     /**
-     *
      * @method PUT
      * @uri_path /user/:UserID
      */
