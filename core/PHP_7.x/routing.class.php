@@ -78,9 +78,9 @@ class RouteFileManager {
         if (count($current) !== count($see)) {
             return false;
         }
-
+        
         foreach ($see as $k => $v) {
-            if ($v[0] !== ':' && $v !== $current[$k]) {
+            if (($v === '' && $v[0] !== ':') && $v !== $current[$k]) {
                 return false;
             }
         }
