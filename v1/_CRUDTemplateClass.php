@@ -14,9 +14,8 @@
 class _CRUDTemplateClass extends Controller {
 
     /**
-     * 
      * @method POST
-     * @uri_param /crud_template
+     * @uri_path /crud_template
      */
     public function create($v1, $v2, $v3 /** ecc ...* */) {
 
@@ -46,13 +45,12 @@ class _CRUDTemplateClass extends Controller {
         }
 
         $this->http->code(CODE::CREATED);
-        return ['ID' => $this->utils['db']->lastInsertId];
+        return ['ID' => $this->utils['db']->lastInsertId()];
     }
 
     /**
-     * 
      * @method GET
-     * @uri_param /crud_template
+     * @uri_path /crud_template
      */
     public function read_list($filter1, $filter2 /** ecc ...* */) {
 
@@ -78,9 +76,8 @@ class _CRUDTemplateClass extends Controller {
     }
 
     /**
-     * 
      * @method GET
-     * @uri_param /crud_template/:ID
+     * @uri_path /crud_template/:ID
      */
     public function read() {
         $q = $this->utils['db']->prepare(''
@@ -102,9 +99,8 @@ class _CRUDTemplateClass extends Controller {
     }
 
     /**
-     * 
      * @method PUT
-     * @uri_param /crud_template/:ID
+     * @uri_path /crud_template/:ID
      */
     public function update($v1, $v2, $v3 /** ecc ...* */) {
 
@@ -137,9 +133,8 @@ class _CRUDTemplateClass extends Controller {
     }
     
     /**
-     * 
      * @method PATCH
-     * @uri_param /crud_template/:ID
+     * @uri_path /crud_template/:ID
      */
     public function update_value($index, $value) {
         if (!in_array($index, ['param1', 'param2', 'param3']) || !is_integer($value)) {
@@ -168,9 +163,8 @@ class _CRUDTemplateClass extends Controller {
     }
 
     /**
-     * 
      * @method DELETE
-     * @uri_param /crud_template/:ID
+     * @uri_path /crud_template/:ID
      */
     public function delete() {
         $q = $this->utils['db']->prepare(""
