@@ -15,10 +15,6 @@ class RoutingManager {
         $this->setRoute();
 
         $this->routeFileCtrl = new RouteFileManager($this->version);
-        $this->routeFileCtrl->updateRouteFile('GET', '', [
-            'class' => 'test',
-            'method' => 'test'
-        ]);
     }
 
     private function setVersion() {
