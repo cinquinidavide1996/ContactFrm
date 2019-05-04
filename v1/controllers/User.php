@@ -15,7 +15,7 @@ class User extends Controller {
 
     /**
      * @method GET
-     * @uri_path /user
+     * @uri_path /aaa
      */
     public function getList($textFilter) {
         $sql = 'SELECT ID, name, email FROM user WHERE TRUE';

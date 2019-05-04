@@ -40,9 +40,11 @@ class RouteFileManager {
 
     private $content;
     private $path;
+    private $version;
 
     public function __construct(string $v) {
-        $this->path = __DIR__ . "/../../$v/route.json";
+        $this->version = $v;
+        $this->path = __DIR__ . "/../../$this->version/route.json";
         $this->content = file_get_contents($this->path);
         $this->content = json_decode($this->content, true);
     }
@@ -62,9 +64,58 @@ class RouteFileManager {
             }
         }
 
+
+        foreach (glob(__DIR__ . "/../../$this->version/controllers/*.php") as $filename) {
+            include_once $filename;
+            $explosesFilename = explode('/', $filename);
+            $current_class = substr(end($explosesFilename), 0, -4);
+
+            foreach (get_class_methods($current_class) as $k => $v) {
+                $class_method = $v;
+                $ref = new ReflectionMethod($current_class, $v);
+                $comment = $ref->getDocComment();
+
+                $comment = str_replace('/*', '', $comment);
+                $comment = str_replace('*/', '', $comment);
+                $comment = str_replace('*', '', $comment);
+                $comment = trim($comment);
+
+                $result = explode('@', $comment);
+                array_shift($result);
+                $r = [];
+                foreach ($result as &$v) {
+                    $v = trim($v);
+                    $app = explode(' ', $v);
+                    $r[$app[0]] = $app[1];
+                }
+
+                if (isset($r['uri_path']) || isset($r['method'])) {
+                    $expld = explode('/', $r['uri_path']);
+                    array_shift($expld);
+
+
+                    if ($httpMethod === $r['method'] && $this->isCurrentRoute($route, $expld)) {
+
+//                        $this->updateRouteFile($httpMethod, substr($r['uri_path'], 1), [
+//                            'class' => "/controllers/$current_class.php",
+//                            'method' => $class_method
+//                        ]);
+
+                        return [
+                            'route' => [
+                                'class' => "/controllers/$current_class.php",
+                                'method' => $class_method
+                            ],
+                            'param' => $this->getRouteParam($route, $expld)
+                        ];
+                    }
+                }
+            }
+        }
+
         throw new Exception("route not valid", CODE::INTERNALSERVERERROR);
     }
-    
+
     public function updateRouteFile(string $http, string $route, array $v) {
         $this->content[$http][$route] = $v;
         file_put_contents($this->path, json_encode($this->content));
@@ -76,7 +127,7 @@ class RouteFileManager {
         }
         
         foreach ($see as $k => $v) {
-            if (($v === '' && $v[0] !== ':') && $v !== $current[$k]) {
+            if (($v[0] !== ':') && $v !== $current[$k]) {
                 return false;
             }
         }
@@ -95,9 +146,42 @@ class RouteFileManager {
 
         return $result;
     }
-    
+
 }
 
+class CommentRouting {
+
+    private $version;
+    private $autoloadCtrl;
+
+    public function __construct($version) {
+        $this->version = $version;
+        $this->autoloadCtrl = new AutoloadManager();
+    }
+
+    private function interpretateComment(string $comment): array {
+        $comment = str_replace('/*', '', $comment);
+        $comment = str_replace('*/', '', $comment);
+        $comment = str_replace('*', '', $comment);
+        $comment = trim($comment);
+
+        $commentArray = explode('@', $comment);
+        
+        if (trim($commentArray[0]) === '') {
+            array_shift($commentArray);
+        }
+        
+        $result = [];
+        foreach ($commentArray as &$v) {
+            $v = trim($v);
+            $app = explode(' ', $v);
+            $result[$app[0]] = $app[1];
+        }
+        
+        return $result;
+    }
+
+}
 
 //il RoutingFileManager deve avere:
     //check se una rotta esiste                 

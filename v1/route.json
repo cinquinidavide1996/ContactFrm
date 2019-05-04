@@ -1,1 +1,39 @@
-{"GET":{"user":{"class":"\/controllers\/User.php","method":"getList"},"user\/:UserID":{"class":"\/controllers\/User.php","method":"detail"},"":{"class":"test","method":"test"}},"HEAD":[],"POST":{"user":{"class":"\/controllers\/User.php","method":"create"}},"PUT":{"user\/:UserID":{"class":"\/controllers\/User.php","method":"update"}},"DELETE":{"user\/:UserID":{"class":"\/controllers\/User.php","method":"delete"}},"CONNECT":[],"OPTIONS":[],"TRACE":[],"PATCH":[]}
+{
+    "GET": {
+        "user": {
+            "class": "\/controllers\/User.php",
+            "method": "getList"
+        },
+        "user\/:UserID": {
+            "class": "\/controllers\/User.php",
+            "method": "detail"
+        },
+        "": {
+            "class": "test",
+            "method": "test"
+        }
+    },
+    "HEAD": [],
+    "POST": {
+        "user": {
+            "class": "\/controllers\/User.php",
+            "method": "create"
+        }
+    },
+    "PUT": {
+        "user\/:UserID": {
+            "class": "\/controllers\/User.php",
+            "method": "update"
+        }
+    },
+    "DELETE": {
+        "user\/:UserID": {
+            "class": "\/controllers\/User.php",
+            "method": "delete"
+        }
+    },
+    "CONNECT": [],
+    "OPTIONS": [],
+    "TRACE": [],
+    "PATCH": []
+}

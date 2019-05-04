@@ -1,32 +1,28 @@
 <?php
 
-class _CRUDTemplateClass extends Controller {
+class Prova extends Controller {
 
     /**
      * @method POST
-     * @uri_path /crud_template
+     * @uri_path /prova
      */
-    public function create($v1, $v2, $v3 /** ecc ...* */) {
+    public function create($nome, $v2 /** ecc ...* */) {
 
-        if (!is_integer($v1) || !is_integer($v2) || !is_integer($v3)) {
-            throw new Exception('param not valid', CODE::BADREQUEST);
-        }
+//        if (!is_integer($nome) || !is_integer($v2)) {
+//            throw new Exception('param not valid', CODE::BADREQUEST);
+//        }
 
         $r = $this->utils['db']->prepare(""
-                . " INSERT INTO `crud_template` ( "
-                . "     `v1`, "
-                . "     `v2`, "
-                . "     `v3`"
+                . " INSERT INTO `prova` ( "
+                . "     `nome`, "
+                . "     `v2` "
                 . " ) VALUES ("
                 . "     :v1, "
-                . "     :v2, "
-                . "     :v3 "
+                . "     :v2 "
                 . " );");
 
-        $r->bindParam('v1', $v1, PDO::PARAM_INT);
+        $r->bindParam('v1', $nome, PDO::PARAM_INT);
         $r->bindParam('v2', $v2, PDO::PARAM_INT);
-        $r->bindParam('v3', $v3, PDO::PARAM_INT);
-
         PDO_EXTENTED::execute($r);
 
         if ($r->rowCount() !== 1) {
@@ -39,24 +35,12 @@ class _CRUDTemplateClass extends Controller {
 
     /**
      * @method GET
-     * @uri_path /crud_template
+     * @uri_path /prova
      */
-    public function read_list($filter1, $filter2 /** ecc ...* */) {
+    public function read_list() {
 
-        $sql = 'SELECT * FROM `crud_template` WHERE TRUE';
-        $sql .= $filter1 !== '' ? ' AND (param1 LIKE :filter1)' : '';
-        $sql .= $filter2 !== '' ? ' AND (param2 LIKE :filter2)' : '';
-
+        $sql = 'SELECT * FROM `prova` WHERE TRUE';
         $q = $this->utils['db']->prepare($sql);
-
-        if ($filter1 !== '') {
-            $filter1 = "%$filter1%";
-            $q->bindParam('filter1', $filter1, PDO::PARAM_STR);
-        }
-        if ($filter2 !== '') {
-            $filter2 = "%$filter2%";
-            $q->bindParam('filter2', $filter2, PDO::PARAM_STR);
-        }
 
         PDO_EXTENTED::execute($q);
 
@@ -66,13 +50,13 @@ class _CRUDTemplateClass extends Controller {
 
     /**
      * @method GET
-     * @uri_path /crud_template/:ID
+     * @uri_path /prova/:ID
      */
     public function read() {
         $q = $this->utils['db']->prepare(''
                 . ' SELECT '
                 . '     * '
-                . ' FROM `crud_template` '
+                . ' FROM `prova` '
                 . ' WHERE '
                 . '     `ID` = :ID ');
 
@@ -89,7 +73,7 @@ class _CRUDTemplateClass extends Controller {
 
     /**
      * @method PUT
-     * @uri_path /crud_template/:ID
+     * @uri_path /prova/:ID
      */
     public function update($v1, $v2, $v3 /** ecc ...* */) {
 
@@ -98,7 +82,7 @@ class _CRUDTemplateClass extends Controller {
         }
 
         $r = $this->utils['db']->prepare(""
-                . " UPDATE `crud_template` "
+                . " UPDATE `prova` "
                 . " SET "
                 . "     `param1` = :v1, "
                 . "     `param2` = :v2, "
@@ -120,10 +104,10 @@ class _CRUDTemplateClass extends Controller {
         $this->http->code(CODE::NOCONTENT);
         return;
     }
-    
+
     /**
      * @method PATCH
-     * @uri_path /crud_template/:ID
+     * @uri_path /prova/:ID
      */
     public function update_value($index, $value) {
         if (!in_array($index, ['param1', 'param2', 'param3']) || !is_integer($value)) {
@@ -131,7 +115,7 @@ class _CRUDTemplateClass extends Controller {
         }
 
         $r = $this->utils['db']->prepare(""
-                . " UPDATE `crud_template` "
+                . " UPDATE `prova` "
                 . " SET "
                 . "     :index = :value "
                 . " WHERE "
@@ -153,11 +137,11 @@ class _CRUDTemplateClass extends Controller {
 
     /**
      * @method DELETE
-     * @uri_path /crud_template/:ID
+     * @uri_path /prova/:ID
      */
     public function delete() {
         $q = $this->utils['db']->prepare(""
-                . " DELETE FROM `crud_template` "
+                . " DELETE FROM `prova` "
                 . " WHERE "
                 . "     `ID` = :ID");
         $q->bindParam('ID', $this->param[':ID'], PDO::PARAM_INT);
@@ -172,24 +156,51 @@ class _CRUDTemplateClass extends Controller {
         return;
     }
 
-}
-?>
+    /**
+     * @method GET
+     * @uri_path /js/route.js
+     */
+    public function route() {
+        $result = [];
+        foreach (glob(__DIR__ . "/*.php") as $k => $v) {
+            include_once $v;
+            $explosesFilename = explode('/', $v);
+            $current_class = substr(end($explosesFilename), 0, -4);
+            $result[$current_class] = [
+            ];
+        }
 
-<!--<script>
-    classTemplate = {
-        name: '_CRUDTemplateClass',
-        construct: ['ID'],
-        method: {
-            create: {
-                verb: 'POST',
-                uri: '/crud_template',
-                param: ['v1', 'v2', 'v3']
-            },
-            read_list: {
-                verb: 'GET',
-                uri: '/crud_template',
-                param: ['filter1', 'filter2']
+        foreach ($result as $k => &$v) {
+            foreach (get_class_methods($k) as $k2 => $v2) {
+
+                $ref = new ReflectionMethod($k, $v2);
+                $comment = $ref->getDocComment();
+
+                $comment = str_replace('/*', '', $comment);
+                $comment = str_replace('*/', '', $comment);
+                $comment = str_replace('*', '', $comment);
+                $comment = trim($comment);
+
+                $prm = explode('@', $comment);
+                array_shift($prm);
+                $r = [];
+                foreach ($prm as &$v3) {
+                    $v3 = trim($v3);
+                    $app = explode(' ', $v3);
+                    $r[$app[0]] = $app[1];
+                }
+
+                if (isset($r['uri_path']) && isset($r['method'])) {
+                $v[$v2] = [
+                    'verb' => $r['method'],
+                    'uri' => $r['uri_path'],
+                    'param' => ''
+                ];
+                }
             }
         }
-    };
-</script>-->
+
+        return $result;
+    }
+
+}
