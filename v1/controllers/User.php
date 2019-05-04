@@ -15,7 +15,7 @@ class User extends Controller {
 
     /**
      * @method GET
-     * @uri_path /aaa
+     * @uri_path /user
      */
     public function getList($textFilter) {
         $sql = 'SELECT ID, name, email FROM user WHERE TRUE';
@@ -119,5 +119,5 @@ class User extends Controller {
     public function update($name, $password) {
         throw new Exception('', CODE::NOTIMPLEMENTED);
     }
-    
+
 }
