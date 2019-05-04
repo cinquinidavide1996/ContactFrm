@@ -120,7 +120,7 @@ class _CRUDTemplateClass extends Controller {
         $this->http->code(CODE::NOCONTENT);
         return;
     }
-    
+
     /**
      * @method PATCH
      * @uri_path /crud_template/:ID
@@ -174,22 +174,3 @@ class _CRUDTemplateClass extends Controller {
 
 }
 ?>
-
-<!--<script>
-    classTemplate = {
-        name: '_CRUDTemplateClass',
-        construct: ['ID'],
-        method: {
-            create: {
-                verb: 'POST',
-                uri: '/crud_template',
-                param: ['v1', 'v2', 'v3']
-            },
-            read_list: {
-                verb: 'GET',
-                uri: '/crud_template',
-                param: ['filter1', 'filter2']
-            }
-        }
-    };
-</script>-->
