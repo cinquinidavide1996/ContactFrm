@@ -68,7 +68,7 @@ foreach($result as $k => &$v) {
   foreach($v as $k2 => &$v2) {
     if ($k2 !== 'constructor') {
       foreach($v['constructor'] as $k3 => $v3) {
-        $v2 = str_replace(":$v3", "\" + this.$v3 + \"", $v2);
+        $v2 = str_replace(":$v3", "\"+this.$v3+\"", $v2);
       }
     }
   }
