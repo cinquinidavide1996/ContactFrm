@@ -116,13 +116,13 @@ foreach($result as $k => &$v) {
         $methodf = str_replace('{{method}}', $v2['verb'], $v2['verb'] === 'GET'?$ajaxTemplate['GET']:$ajaxTemplate['POST']);
         $methodf = str_replace('{{path}}', "/v1$v2[uri]", $methodf);
         $methodf = str_replace('{{param}}', $sendParam, $methodf);
-        echo"){ $methodf }";
+        echo"){" . $methodf . "}";
       }
 
       }
 
       foreach($v1['constructor'] as $k9 => $v9) {
-        echo " _set$v9($v9){this.$v9 = $v9;}";
+        echo "_set$v9($v9){this.$v9 = $v9;}";
       }
 
       echo "}";
