@@ -77,14 +77,14 @@ foreach($result as $k => &$v) {
     header("Content-Type: application/javascript; charset=UTF-8");
     $ajaxTemplate = [];
 
-    $ajaxTemplate['POST'] = 'var xhttp=new XMLHttpRequest;var data= new FormData(); {{param}} xhttp.onreadystatechange=function(){4==this.readyState&&200==this.status&&console.log(this.responseText)},xhttp.open("{{method}}","{{path}}",!0),xhttp.send(data);';
-    $ajaxTemplate['GET'] = 'var xhttp=new XMLHttpRequest; xhttp.onreadystatechange=function(){4==this.readyState&&200==this.status&&console.log(this.responseText)},xhttp.open("{{method}}","{{path}}?{{param}}",!0),xhttp.send();';
+    $ajaxTemplate['POST'] = 'var xhttp=new XMLHttpRequest;var data= new FormData();{{param}}xhttp.onreadystatechange=function(){4==this.readyState&&200==this.status&&console.log(this.responseText)},xhttp.open("{{method}}","{{path}}",!0),xhttp.send(data);';
+    $ajaxTemplate['GET'] = 'var xhttp=new XMLHttpRequest;xhttp.onreadystatechange=function(){4==this.readyState&&200==this.status&&console.log(this.responseText)},xhttp.open("{{method}}","{{path}}?{{param}}",!0),xhttp.send();';
 
     foreach($result as $k1 => $v1) {
-      echo "class $k1 { ";
+      echo "class $k1{";
       foreach($v1 as $k2 => $v2) {
         if ($k2 === 'constructor') {
-            echo " constructor(";
+            echo "constructor(";
             $lastElement = end($v2);
             foreach($v2 as $ck1 => $cv1) {
               echo "$cv1";
@@ -92,13 +92,13 @@ foreach($result as $k => &$v) {
                 echo ',';
               }
             }
-            echo ") {" ;
+            echo "){" ;
               foreach($v2 as $ck1 => $cv1) {
-                echo " this.$cv1 = $cv1; ";
+                echo "this.$cv1 = $cv1;";
               }
-              echo "} ";
+              echo "}";
         } else {
-        echo " $k2(";
+        echo "$k2(";
         $lastElement = end($v2['param']);
         $sendParam = "";
         foreach($v2['param'] as $k3 => $v3) {
@@ -116,9 +116,15 @@ foreach($result as $k => &$v) {
         $methodf = str_replace('{{method}}', $v2['verb'], $v2['verb'] === 'GET'?$ajaxTemplate['GET']:$ajaxTemplate['POST']);
         $methodf = str_replace('{{path}}', "/v1$v2[uri]", $methodf);
         $methodf = str_replace('{{param}}', $sendParam, $methodf);
-        echo") { $methodf } ";
+        echo"){ $methodf }";
       }
+
       }
+
+      foreach($v1['constructor'] as $k9 => $v9) {
+        echo " _set$v9($v9){this.$v9 = $v9;}";
+      }
+
       echo "}";
     }
 exit();
