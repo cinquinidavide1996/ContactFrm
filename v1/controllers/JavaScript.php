@@ -77,8 +77,8 @@ foreach($result as $k => &$v) {
     header("Content-Type: application/javascript; charset=UTF-8");
     $ajaxTemplate = [];
 
-    $ajaxTemplate['POST'] = 'var xhttp=new XMLHttpRequest;var data= new FormData();{{param}}xhttp.onreadystatechange=function(){4==this.readyState&&200==this.status&&console.log(this.responseText)},xhttp.open("{{method}}","{{path}}",!0),xhttp.send(data);';
-    $ajaxTemplate['GET'] = 'var xhttp=new XMLHttpRequest;xhttp.onreadystatechange=function(){4==this.readyState&&200==this.status&&console.log(this.responseText)},xhttp.open("{{method}}","{{path}}?{{param}}",!0),xhttp.send();';
+    $ajaxTemplate['POST'] = 'return new Promise(function(resolve,reject){var x=new XMLHttpRequest;var data=new FormData();{{param}}x.onreadystatechange=function(){if(4==this.readyState){if(200==this.status){resolve(this.responseText);}else{reject(this);}}},x.open("{{method}}","{{path}}",!0),x.send(data);});';
+    $ajaxTemplate['GET'] = 'return new Promise(function(resolve,reject){var x=new XMLHttpRequest;x.onreadystatechange=function(){if(4 == this.readyState){if (200 == this.status){resolve(this.responseText);}else{reject(this);}}},x.open("{{method}}","{{path}}?{{param}}",!0),x.send();});';
 
     foreach($result as $k1 => $v1) {
       echo "class $k1{";
