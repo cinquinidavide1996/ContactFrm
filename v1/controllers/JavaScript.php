@@ -68,7 +68,7 @@ foreach($result as $k => &$v) {
   foreach($v as $k2 => &$v2) {
     if ($k2 !== 'constructor') {
       foreach($v['constructor'] as $k3 => $v3) {
-        $v2 = str_replace(":$v3", "\"+this.$v3+\"", $v2);
+        $v2 = str_replace(":$v3", "\"+obj.$v3+\"", $v2);
       }
     }
   }
@@ -77,8 +77,8 @@ foreach($result as $k => &$v) {
     header("Content-Type: application/javascript; charset=UTF-8");
     $ajaxTemplate = [];
 
-    $ajaxTemplate['POST'] = 'return new Promise(function(resolve,reject){var x=new XMLHttpRequest;var data=new FormData();{{param}}x.onreadystatechange=function(){if(4==this.readyState){if(200==this.status){resolve(this.responseText);}else{reject(this);}}},x.open("{{method}}","{{path}}",!0),x.send(data);});';
-    $ajaxTemplate['GET'] = 'return new Promise(function(resolve,reject){var x=new XMLHttpRequest;x.onreadystatechange=function(){if(4 == this.readyState){if (200 == this.status){resolve(this.responseText);}else{reject(this);}}},x.open("{{method}}","{{path}}?{{param}}",!0),x.send();});';
+    $ajaxTemplate['POST'] = 'var obj=this;return new Promise(function(resolve,reject){var x=new XMLHttpRequest;var data=new FormData();{{param}}x.onreadystatechange=function(){if(4==this.readyState){if(200==this.status){resolve(this.responseText);}else{reject(this);}}},x.open("{{method}}","{{path}}",!0),x.send(data);});';
+    $ajaxTemplate['GET'] = 'var obj=this;return new Promise(function(resolve,reject){var x=new XMLHttpRequest;x.onreadystatechange=function(){if(4==this.readyState){if(200==this.status){resolve(this.responseText);}else{reject(this);}}},x.open("{{method}}","{{path}}?{{param}}",!0),x.send();});';
 
     foreach($result as $k1 => $v1) {
       echo "class $k1{";
@@ -107,9 +107,9 @@ foreach($result as $k => &$v) {
             echo ',';
           }
           if ($v2['verb'] === 'GET') {
-            $sendParam .= "&$v3=\" + $v3 + \"";
+            $sendParam .= "&$v3=\"+$v3+\"";
           } else {
-              $sendParam .= "data.append('$v3', $v3);";
+              $sendParam .= "data.append('$v3',$v3);";
           }
         }
 
@@ -122,7 +122,7 @@ foreach($result as $k => &$v) {
       }
 
       foreach($v1['constructor'] as $k9 => $v9) {
-        echo "_set$v9($v9){this.$v9 = $v9;}";
+        echo "_set$v9($v9){this.$v9=$v9;}";
       }
 
       echo "}";
