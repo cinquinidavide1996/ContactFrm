@@ -6,7 +6,6 @@
     <script>
       var doc = new JavaScript
       doc.class2Json().then(function(data) {
-        console.log(data);
         var template = $('#documentation template').html();
         $.each(JSON.parse(data), function(className) {
           $.each(this, function(functionName) {
@@ -48,7 +47,7 @@
           <td>{{resource}}</td>
           <td>{{method}}</td>
           <td>{{name}}</td>
-          <td><a href="/v1{{route}}">{{route}}</a></td>
+          <td><a href="/v1{{route}}" target="_blank">{{route}}</a></td>
           <td>{{param}}</td>
         </tr>
       </template>
